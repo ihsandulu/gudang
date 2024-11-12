@@ -555,7 +555,9 @@ $transaction_type = "keluar";
                                 })
                                 .done(function(data) {
                                     updatestatus(transaction_id, data);
-                                    print(transaction_id);
+                                    // print(transaction_id);
+                                    alert("Pengajuan Sedang Diproses!");
+                                    listnota(2);nota(0);
                                     $("#bayar").modal('hide');
                                     cekstatus(transaction_id);
                                     fokus('barcode');

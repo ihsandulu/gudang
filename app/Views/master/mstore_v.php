@@ -63,7 +63,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label class="control-label col-sm-2" for="store_phone">Phone:</label>
                                     <div class="col-sm-10">
                                         <input type="text" autofocus class="form-control" id="store_phone" name="store_phone" placeholder="" value="<?= $store_phone; ?>">
@@ -90,7 +90,7 @@
                                         <textarea class="form-control" id="store_noteinvoice" name="store_noteinvoice" placeholder="Mis:Barang tidak dapat ditukar."><?= $store_noteinvoice; ?></textarea>
                                     </div>
                                 </div>
-
+ -->
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="store_picture">Logo:</label>
                                     <div class="col-sm-10">
