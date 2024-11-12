@@ -122,7 +122,7 @@
                                         <td><?= $usr->petugas_name; ?></td>
                                         <td id="username<?= $no; ?>">
                                             <?php if ($usr->pic_name == "" && $usr->transaction_type=="keluar") { ?>
-                                                Belum ACC
+                                                <button type="button" class="btn btn-warning btn-xs" onclick="acc('<?=session()->get('user_id');?>', '<?=session()->get('user_name');?>', '<?=$usr->transaction_id;?>', '<?=$no;?>')">Belum ACC</button>
                                             <?php } else {
                                                 echo $usr->pic_name;
                                             } ?>
