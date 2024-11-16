@@ -21,7 +21,7 @@ class petugas_m extends core_m
             ->getWhere($petugasd);
         /* echo $this->db->getLastquery();
         die; */
-        $larang = array("log_id", "id", "user_id", "action", "data", "petugas_id_dep", "trx_id", "trx_code");
+        $larang = array("log_id", "id", "action", "data", "petugas_id_dep", "trx_id", "trx_code");
         if ($us->getNumRows() > 0) {
             foreach ($us->getResult() as $petugas) {
                 foreach ($this->db->getFieldNames('petugas') as $field) {
@@ -34,7 +34,6 @@ class petugas_m extends core_m
             foreach ($this->db->getFieldNames('petugas') as $field) {
                 $data[$field] = "";
             }
-            $data["petugas_ppn"] = "0";
             $data["petugas_date"] = date("Y-m-d");
         }
 
