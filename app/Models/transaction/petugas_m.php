@@ -42,7 +42,7 @@ class petugas_m extends core_m
         //delete
         if ($this->request->getPost("delete") == "OK") {  
             $petugas_id=   $this->request->getPost("petugas_id");
-            $cek=$this->db->table("petugasd")
+            $cek=$this->db->table("petugas")
             ->where("petugas_id", $petugas_id) 
             ->get()
             ->getNumRows();
