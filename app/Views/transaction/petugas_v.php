@@ -74,7 +74,7 @@
                                         //echo $this->db->getLastQuery();
                                         ?>
                                         <select required class="form-control select" id="user_id" name="user_id">
-                                            <option value="" <?= ($user_id == "") ? "selected" : ""; ?>>Pilih User</option>
+                                            <option value="0" <?= ($user_id == "0") ? "selected" : ""; ?>>Pilih User</option>
                                             <?php
                                             foreach ($user->getResult() as $user) { ?>
                                                 <option value="<?= $user->user_id; ?>" <?= ($user_id == $user->user_id) ? "selected" : ""; ?>><?= $user->user_name; ?></option>
