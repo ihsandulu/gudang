@@ -183,7 +183,7 @@
                         <?php if ($message != "") { ?>
                             <div class="alert alert-info alert-dismissable">
                                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                <strong><?= $message; ?></strong>
+                                <strong><?= $message; ?><?php if($uploadproduct_picture!=""){echo "<br/>".$uploadproduct_picture;}?></strong>
                             </div>
                         <?php } ?>
 

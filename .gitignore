@@ -125,6 +125,7 @@ nb-configuration.xml
 /phpunit*.xml
 /.phpunit.*.cache
 
+public/images/product_picture/
 images/product_picture/
 images/store_picture/
 
