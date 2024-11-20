@@ -743,11 +743,15 @@ $transaction_type = "keluar";
                                     transaction_type: '<?= $transaction_type; ?>'
                                 })
                                 .done(function(data) {
-                                    // alert(data);
-                                    listnota($("#listnotastatus").val());
-                                    nota(transaction_id);
+                                    if(data>0){
+                                        // alert(data);
+                                        listnota($("#listnotastatus").val());
+                                        nota(transaction_id);
 
-                                    refreshlistproduct();
+                                        refreshlistproduct();
+                                    }else{
+                                        alert("Stok tidak mencukupi!");
+                                    }
                                 });
                         }
                         //masukin product hanya satu pcs

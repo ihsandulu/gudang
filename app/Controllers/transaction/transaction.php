@@ -427,7 +427,7 @@ class transaction extends baseController
         $listnota = $builder
             ->where("transaction.transaction_type", $transaction_type)
             ->get();
-            // echo $this->db->getLastQuery();
+        // echo $this->db->getLastQuery();
         foreach ($listnota->getResult() as $listnota) {
         ?>
             <button onclick="nota(<?= $listnota->transaction_id; ?>);" class="btn btn-outline-secondary mb-2  btn-child" type="button"><small><?= $listnota->transaction_no; ?></small></button>
@@ -590,22 +590,52 @@ class transaction extends baseController
         $pro = $product->get();
         // echo $this->db->getLastQuery();
         if ($pro->getNumRows() > 0) {
-            $where["transaction_id"] = $transaction_id;
-            $where["product_id"] = $pro->getRow()->product_id;
+            //cek ketersediaan
+            if ($pro->getRow()->product_stock < $transactiond_qty) {
+                $data["message"] = -1;
+            } else {
 
-            $cari = $this->db->table('transactiond')
-                ->where($where)
-                ->get();
 
-            $transactiond = $this->db->table('transactiond');
-            if ($cari->getNumRows() > 0) {
-                foreach ($cari->getResult() as $cari) {
-                    $qty = $cari->transactiond_qty;
+                $where["transaction_id"] = $transaction_id;
+                $where["product_id"] = $pro->getRow()->product_id;
 
-                    $input["transactiond_qty"] = $qty + $transactiond_qty;
-                    $input["transactiond_type"] = $transaction_type;
-                    $transactiond->update($input, $where);
+                $cari = $this->db->table('transactiond')
+                    ->where($where)
+                    ->get();
 
+                $transactiond = $this->db->table('transactiond');
+                if ($cari->getNumRows() > 0) {
+                    foreach ($cari->getResult() as $cari) {
+                        $qty = $cari->transactiond_qty;
+
+                        $input["transactiond_qty"] = $qty + $transactiond_qty;
+                        $input["transactiond_type"] = $transaction_type;
+                        $transactiond->update($input, $where);
+
+
+                        $where1["product_id"] = $pro->getRow()->product_id;
+                        $product = $this->db->table('product');
+                        $product_stockawal = $product->getWhere($where1)->getRow()->product_stock;
+                        if ($transaction_type == "keluar") {
+                            $product_stock = $product_stockawal - $transactiond_qty;
+                        } else {
+                            $product_stock = $product_stockawal + $transactiond_qty;
+                        }
+                        $input1["product_stock"] = $product_stock;
+                        $product->update($input1, $where1);
+
+
+                        $input2["transactiond_stokawal"] = $product_stockawal;
+                        $input2["transactiond_stokakhir"] = $product_stock;
+                        $transactiondp = $this->db->table("transactiond");
+                        $transactiondp->update($input2, $where);
+                    }
+                } else {
+                    // $where["store_id"]=session()->get("store_id");
+                    $where["transactiond_qty"] = $transactiond_qty;
+                    $where["transactiond_type"] = $transaction_type;
+                    $transactiond->insert($where);
+                    $transactiond_id = $this->db->insertID();
 
                     $where1["product_id"] = $pro->getRow()->product_id;
                     $product = $this->db->table('product');
@@ -619,39 +649,16 @@ class transaction extends baseController
                     $product->update($input1, $where1);
 
 
+                    $where2["transactiond_id"] = $transactiond_id;
                     $input2["transactiond_stokawal"] = $product_stockawal;
                     $input2["transactiond_stokakhir"] = $product_stock;
                     $transactiondp = $this->db->table("transactiond");
-                    $transactiondp->update($input2, $where);
+                    $transactiondp->update($input2, $where2);
                 }
-            } else {
-                // $where["store_id"]=session()->get("store_id");
-                $where["transactiond_qty"] = $transactiond_qty;
-                $where["transactiond_type"] = $transaction_type;
-                $transactiond->insert($where);
-                $transactiond_id = $this->db->insertID();
 
-                $where1["product_id"] = $pro->getRow()->product_id;
-                $product = $this->db->table('product');
-                $product_stockawal = $product->getWhere($where1)->getRow()->product_stock;
-                if ($transaction_type == "keluar") {
-                    $product_stock = $product_stockawal - $transactiond_qty;
-                } else {
-                    $product_stock = $product_stockawal + $transactiond_qty;
-                }
-                $input1["product_stock"] = $product_stock;
-                $product->update($input1, $where1);
-
-
-                $where2["transactiond_id"] = $transactiond_id;
-                $input2["transactiond_stokawal"] = $product_stockawal;
-                $input2["transactiond_stokakhir"] = $product_stock;
-                $transactiondp = $this->db->table("transactiond");
-                $transactiondp->update($input2, $where2);
+                // $data["message"] = $this->db->getLastQuery();
+                $data["message"] = $transactiond_qty;
             }
-
-            // $data["message"] = $this->db->getLastQuery();
-            $data["message"] = $transactiond_qty;
         } else {
             $data["message"] = 0;
         }
