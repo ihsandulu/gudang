@@ -594,8 +594,6 @@ class transaction extends baseController
             if ($pro->getRow()->product_stock < $transactiond_qty) {
                 $data["message"] = -1;
             } else {
-
-
                 $where["transaction_id"] = $transaction_id;
                 $where["product_id"] = $pro->getRow()->product_id;
 
